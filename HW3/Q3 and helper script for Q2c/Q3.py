@@ -31,10 +31,10 @@ armjoint6_handle = sim.getObject('/UR5/joint/joint/joint/joint/joint/joint')
 # get the handles of end effector
 endeffector_handle = sim.getObject('/UR5/joint/joint/joint/joint/joint/joint/suctionPad')
 # get the handles of the tables and boxes
-# table1_handle = sim.getObject('/Table1')
-# table2_handle = sim.getObject('/Table2')
-# box1_handle = sim.getObject('/Box1')
-# box2_handle = sim.getObject('/Box2')
+table1_handle = sim.getObject('/Table1')
+table2_handle = sim.getObject('/Table2')
+box1_handle = sim.getObject('/Box1')
+box2_handle = sim.getObject('/Box2')
 
 # set the arm to position control
 sim.setObjectInt32Param(armjoint1_handle, 2000, 1)
