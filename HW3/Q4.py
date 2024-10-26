@@ -15,8 +15,8 @@ def pathplanning(S, G, n, O):
         x2, y2 = O[i][1]
         grid[y1:y2 + 1, x1:x2 + 1] = 1
 
-    start = (S[1], S[0]) 
-    goal = (G[1], G[0])    
+    start = (S[0], S[1])  # S is (row, col)
+    goal = (G[0], G[1])    # G is (row, col)    
 
     wavefront[start] = 2 
 
@@ -46,35 +46,35 @@ def pathplanning(S, G, n, O):
     current = goal 
 
     while current != start:
-        path.append((current[1], current[0])) 
-        neighbors = []
+        path.append((current[1], current[0]))  # Store as (col, row) for path
 
-        # Check neighbors to find the next step towards the start
+        neighbors = []
         for direction in directions:
             neighbor = (current[0] + direction[0], current[1] + direction[1])
 
             if 0 <= neighbor[0] < GRID_SIZE and 0 <= neighbor[1] < GRID_SIZE:
-                if wavefront[neighbor] > 0:  # Not an obstacle and visited
+                if wavefront[neighbor] > 0:  
                     neighbors.append((neighbor, wavefront[neighbor]))
 
         if not neighbors:
             return []  # No path found
-
-        # Find the neighbor with the minimum distance to start
+        
         current = min(neighbors, key=lambda x: x[1])[0]
 
-    path.append((start[1], start[0])) 
-    
+    path.append((start[1], start[0]))
+
     # Reverse the path to get it from start to goal
     path.reverse()  
 
     return path
 
 def main():
+    # (y, x) because row then col
     S = (0, 0) 
     G = (9, 9)
     
     # Obstacles defined by their top-left and bottom-right corners 
+    # (y, x) because row then col
     O = [  
         [(2, 2), (4, 4)]
     ]
@@ -85,11 +85,11 @@ def main():
     print("Path from start to goal:", path)
     
     # Drawing path onto wavefront
-    for x, y in path:
+    for y, x in path:
         wavefront[x][y] = 1
         
-    wavefront[S[0]][S[1]] = -5
-    wavefront[G[0]][G[1]] = -6
+    wavefront[S[0]][S[1]] = -5  # Start point
+    wavefront[G[0]][G[1]] = -6  # Goal point
     print("\nLet -5 represent the start, -6 represent the end, and 1s represent the path:\n")
     print(wavefront)
 
