@@ -109,7 +109,8 @@ def dosimulation(o):
 
 sim.startSimulation()
 
-stuff = [54, -34, -2, -28, 37, 23, 60, 24, -34, 15]
+# List of angles in degrees, all joint angles will equal this 
+stuff = [54, -34, -2, -28, 37, 23, 60, 24, -34, 15] 
 print("\nQuestion 2 Part C helper:")
 for thing in stuff:
     dosimulation(thing)

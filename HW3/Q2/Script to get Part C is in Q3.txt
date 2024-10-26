@@ -1,0 +1,1 @@
+The script that get Part C information like putting rotation sets into the simulation and getting position and orientation is in Q3 Directory along with all the CoppeliaSim libaries
