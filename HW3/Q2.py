@@ -12,7 +12,13 @@ def computeDH(a, alpha, d, theta):
 
 def FK(DH):
     n = len(DH) 
-    A = np.eye(4) 
+    A =np.array([
+        [-1, 0, 0, 0],
+        [0, -1, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1]
+    ]) 
+    # np.eye(4) 
     
     for i in range(n):
         theta, a, d, alpha = DH[i]  
@@ -39,12 +45,14 @@ def FK(DH):
 
 # Testing using deg = -30
 def PartB(DH):
-    t = -30
+    t = 30
     theta = np.deg2rad(t)
     copyDH = [
-            [row[0] - theta if i == 0 else val for i, val in enumerate(row)]
+            [row[0]-theta if i == 0 else val for i, val in enumerate(row)]
             for row in DH
-        ] # List Comprhention in python is OP AF >:)
+        ] 
+    
+    print (f"\n{DH}\n\n{copyDH}\n")
     FK_mtr = FK(copyDH)
     
     print(f"Random Matrix, using theta: {t} in degrees, {theta} in radians")
@@ -58,13 +66,19 @@ def main():
     # Ordering Theta, a, d, alpha,      Radians and mm because tahts what was on the slides 
     # from Lect 6, pg 7
     DH_params = [
-        [np.pi/2, 0, 89.2, np.pi/2],    # Joint 1
-        [np.pi/2, 425, 0, 0],           # Joint 2
-        [0, 392, 0, 0],                 # Joint 3
-        [np.pi/2, 0, 109.3, np.pi/2],   # Joint 4
-        [0, 0, 94.75, -np.pi/2],        # Joint 5
-        [0, 0, 82.5, 0]                 # Joint 6
+        [np.pi/2, 0     , 89.2  , np.pi/2],    # Joint 1
+        [np.pi/2, 425   , 0     , 0],           # Joint 2
+        [0      , 392   , 0     , 0],                 # Joint 3
+        [np.pi/2, 0     , 109.3 , np.pi/2],   # Joint 4
+        [0      , 0     , 94.75 , -np.pi/2],        # Joint 5
+        [0      , 0     , 82.5  , 0]                 # Joint 6
         ]
+    
+    # DH_params = [
+    #     [np.deg2rad(-30)    , 0     , 50    , 0],    # Joint 1
+    #     [0      , 0     , 50    , -np.pi/2],           # Joint 2
+    #     [0      , 0    , 50     , 0],                 # Joint 3
+    #     ]
     
     # PART A
     FK_mtx = FK(DH_params)

@@ -81,6 +81,7 @@ def main():
     n = len(O)
 
     path = pathplanning(S, G, n, O)
+    print("Homework 3, Question 4:")
     print("Path from start to goal:", path)
     
     # Drawing path onto wavefront
@@ -89,7 +90,7 @@ def main():
         
     wavefront[S[0]][S[1]] = -5
     wavefront[G[0]][G[1]] = -6
-    print("Let -5 represent the start, -6 represent the end, and 1s represent the path:")
+    print("\nLet -5 represent the start, -6 represent the end, and 1s represent the path:\n")
     print(wavefront)
 
 main()

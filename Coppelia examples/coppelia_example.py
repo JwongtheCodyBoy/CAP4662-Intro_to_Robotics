@@ -4,6 +4,8 @@ sys.path.append('zmqRemoteApi')
 import math
 import time
 from zmqRemoteApi import RemoteAPIClient
+import random
+
 
 
 
@@ -73,22 +75,58 @@ def check_collision():
         return 1
 
 # you do not need to modify the code above
-sim.startSimulation()
-# move arm to a certain pose
-move_arm([30, 30, 30, 30, 30, 30])
-# read the position and orientation of the end-effector
-position = sim.getObjectPosition(endeffector_handle, sim.handle_world)
-orientation = sim.getObjectOrientation(endeffector_handle, sim.handle_world)
-orientation[0] = orientation[0] / math.pi * 180
-orientation[1] = orientation[1] / math.pi * 180
-orientation[2] = orientation[2] / math.pi * 180
-print(position, orientation)
-# print the collision checking result, 1 means there is collision, 0 means no collision
-print(check_collision())
-input('haha')
+# sim.startSimulation()
+# # move arm to a certain pose
+# move_arm([30, 30, 30, 30, 30, 30])
+# # read the position and orientation of the end-effector
+# position = sim.getObjectPosition(endeffector_handle, sim.handle_world)
+# orientation = sim.getObjectOrientation(endeffector_handle, sim.handle_world)
+# orientation[0] = orientation[0] / math.pi * 180
+# orientation[1] = orientation[1] / math.pi * 180
+# orientation[2] = orientation[2] / math.pi * 180
+# print(position, orientation)
+# # print the collision checking result, 1 means there is collision, 0 means no collision
+# print(check_collision())
+# input('haha')
 
-sim.stopSimulation()
+# sim.stopSimulation()
 
 
-print ('Program ended')
+# print ('Program ended')
 
+# Function to generate a random pose within the joint limits
+def generate_random_pose():
+    return [
+        random.uniform(-360,360),
+        random.uniform(-360,360),
+        random.uniform(-360,360),
+        random.uniform(-360,360),
+        random.uniform(-360,360),
+        random.uniform(-360,360),
+    ]
+
+def main():
+    sim.startSimulation()
+
+    # Generate and check 100 poses
+    free_space_poses = []
+    numColi = 0
+    for _ in range(100):
+        pose = generate_random_pose()
+        move_arm(pose)
+
+        # Check if the pose is collision-free
+        if check_collision() == 0:  # 0 means no collision
+            free_space_poses.append(pose)
+        else:
+            numColi += 1
+
+    # Output poses in free space (collision-free)
+    print("Poses in free space (collision-free):")
+    for pose in free_space_poses:
+        print(pose)
+
+    sim.stopSimulation()
+    print(f'Simulation ended with, {numColi} collisions and {len(free_space_poses)} free space position')
+
+main()

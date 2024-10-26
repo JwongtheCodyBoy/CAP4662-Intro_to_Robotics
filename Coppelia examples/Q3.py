@@ -28,6 +28,7 @@ def main():
 
     # Generate and check 100 poses
     free_space_poses = []
+    numColi = 0
     for _ in range(100):
         pose = generate_random_pose()
         coppelia_example.move_arm(pose)
@@ -36,6 +37,8 @@ def main():
         # Check if the pose is collision-free
         if coppelia_example.check_collision() == 0:  # 0 means no collision
             free_space_poses.append(pose)
+        else:
+            numColi += 1
 
     # Output poses in free space (collision-free)
     print("Poses in free space (collision-free):")
@@ -43,6 +46,6 @@ def main():
         print(pose)
 
     coppelia_example.sim.stopSimulation()
-    print('Simulation ended')
+    print(f'Simulation ended with, {numColi} collisions and {len(free_space_poses)} free space position')
 
 main()
