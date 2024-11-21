@@ -7,18 +7,17 @@ class InterpolatingPolynomial:
         self.num_segments = len(path) - 1
         self.segment_time = total_time / self.num_segments
     
-    def calculate_coefficients(self, start, goal, T):
-        # Boundary conditions: start and goal angles and zero velocities at both ends
+    def Calculate_coefficients(self, start, goal, T):
         a0 = start
         a1 = 0
-        a2 = (3 * (goal - start)) / T**2
-        a3 = (-2 * (goal - start)) / T**3
+        a2 = (3 * (goal - start)) / T**2        # Acceleration coeffi
+        a3 = (-2 * (goal - start)) / T**3       # Jerk  coeffi
         return a0, a1, a2, a3
 
-    def interpolate_segment(self, start, goal, T):
+    def Interpolate_segment(self, start, goal, T):
         # Generates interpolated angles for each joint in a segment
-        coeffs = [self.calculate_coefficients(start[i], goal[i], T) for i in range(6)]
-        t_values = np.linspace(0, T, num=12)  # Adjust as needed
+        coeffs = [self.Calculate_coefficients(start[i], goal[i], T) for i in range(6)]
+        t_values = np.linspace(0, T, num=5)
         interpolated_points = []
         
         for t in t_values:
@@ -30,37 +29,36 @@ class InterpolatingPolynomial:
         
         return interpolated_points
 
-    def execute_path(self):
+    def Execute_path(self):
         for i in range(self.num_segments):
             start = self.path[i]
             goal = self.path[i+1]
-            interpolated_points = self.interpolate_segment(start, goal, self.segment_time)
+            interpolated_points = self.Interpolate_segment(start, goal, self.segment_time)
             
             for point in interpolated_points:
                 move_arm(point)
-                time.sleep(0.05)  # Adjust timing if necessary
+                # time.sleep(0.01)
                 
-                
+
+# Test Case                
 sim.startSimulation()
-# Usage example
-start_pos = np.array([0, -90, 90, 0, 90, 0])  # example start configuration in degrees
-start_pos = np.array([0, -0, 0, 0, 0, 0])  # example start configuration in degrees
+
+start_pos = np.array([0, 0, 0, 0, 0, 0])  # example start configuration in degrees
 goal_pos = np.array([45, 45, 45, 45, 45, 0])  # example goal configuration in degrees
 rrt_planner = RRTPlanner(start=start_pos, goal=goal_pos)
 
 # path will be list of angles in radians
-path = rrt_planner.plan()
+path = rrt_planner.Plan()
 
 move_arm(start_pos)
 
 # for it in path:
 #     move_arm(it)
-#     time.sleep(0.5)
+#     time.sleep(0.05)
 
+interplatingPoly = InterpolatingPolynomial(path, 100)
 
-interplatingPoly = InterpolatingPolynomial(path, 1)
-
-interplatingPoly.execute_path()
+interplatingPoly.Execute_path()
 
 sim.stopSimulation()
 print ('Program ended')
